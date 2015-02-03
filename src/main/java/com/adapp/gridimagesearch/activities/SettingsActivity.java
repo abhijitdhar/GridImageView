@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -39,8 +40,14 @@ public class SettingsActivity extends ActionBarActivity {
         as_sitesearch = getIntent().getStringExtra("as_sitesearch");
 
         spImageSz = (Spinner) findViewById(R.id.spImageSz);
+        setSpinnerAdapter(new String[] {"small", "medium", "large", "xlarge"}, spImageSz);
+
         spImageType = (Spinner) findViewById(R.id.spImageType);
+        setSpinnerAdapter(new String[] {"face", "photo", "clipart", "lineart"}, spImageType);
+
         spColorFilter = (Spinner) findViewById(R.id.spColorFilter);
+        setSpinnerAdapter(new String[] {"black", "blue", "brown", "gray", "green"}, spColorFilter);
+
         etSiteFilter = (EditText) findViewById(R.id.etSiteFilter);
 
         setSpinnerToValue(spImageSz, imgsz);
@@ -48,6 +55,11 @@ public class SettingsActivity extends ActionBarActivity {
         setSpinnerToValue(spColorFilter, imgcolor);
         etSiteFilter.setText(as_sitesearch);
 
+    }
+
+    private void setSpinnerAdapter(String [] list, Spinner spinner) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, list);
+        spinner.setAdapter(adapter);
     }
 
     public void setSpinnerToValue(Spinner spinner, String value) {
@@ -100,6 +112,11 @@ public class SettingsActivity extends ActionBarActivity {
 
         setResult(RESULT_OK, i);
 
+        this.finish();
+    }
+
+    public void onCancel(View view) {
+        setResult(RESULT_CANCELED, null);
         this.finish();
     }
 }

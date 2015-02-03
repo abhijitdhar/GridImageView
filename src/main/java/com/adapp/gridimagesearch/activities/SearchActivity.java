@@ -1,6 +1,9 @@
 package com.adapp.gridimagesearch.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -164,6 +167,12 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     private void fireGoogleSearchAPI(String searchUrl, final boolean pagination) {
+
+        if(isNetworkAvailable() == false) {
+            Toast.makeText(this, "Network connection unavailable!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
@@ -189,5 +198,12 @@ public class SearchActivity extends ActionBarActivity {
                 //Log.i("INFO", imageResults.toString());
             }
         });
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

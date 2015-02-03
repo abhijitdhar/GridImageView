@@ -4,6 +4,19 @@
     android:layout_height="match_parent"
     tools:context="com.adapp.gridimagesearch.activities.ImageDisplayActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+
     <ImageView
         android:id="@+id/ivImageResult"
         android:layout_width="wrap_content"
@@ -14,8 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:maxWidth="600dp"
-        android:scaleType="center"
+
         android:adjustViewBounds="true"
         />
 </RelativeLayout>

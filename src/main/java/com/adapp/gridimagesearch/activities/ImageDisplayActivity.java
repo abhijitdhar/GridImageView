@@ -1,15 +1,19 @@
 package com.adapp.gridimagesearch.activities;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.adapp.gridimagesearch.R;
 import com.adapp.gridimagesearch.models.ImageResult;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 public class ImageDisplayActivity extends ActionBarActivity {
 
@@ -24,9 +28,33 @@ public class ImageDisplayActivity extends ActionBarActivity {
         //String url = getIntent().getStringExtra("url");
         ImageResult result = (ImageResult) getIntent().getSerializableExtra("result");
         String url = result.fullUrl;
-        ImageView ivImageResult = (ImageView) findViewById(R.id.ivImageResult);
+        final ImageView ivImageResult = (ImageView) findViewById(R.id.ivImageResult);
 
-        Picasso.with(this).load(url).into(ivImageResult);
+
+        Transformation transformation = new Transformation() {
+
+            @Override public Bitmap transform(Bitmap source) {
+                int targetWidth = ivImageResult.getMaxWidth();
+                //int targetWidth = holder.message_picture.getWidth();
+
+                double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+                int targetHeight = (int) (targetWidth * aspectRatio);
+                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+                if (result != source) {
+                    // Same bitmap is returned if sizes are the same
+                    source.recycle();
+                }
+                return result;
+            }
+
+            @Override public String key() {
+                return "transformation" + " desiredWidth";
+            }
+        };
+
+
+
+        Picasso.with(this).load(url).placeholder(R.drawable.ic_loading_action).into(ivImageResult);
     }
 
 
